@@ -2,8 +2,8 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Île aux Bonbons 🍭 — Course des Gourmands</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Candy Rush Night — Runner solo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600;700&display=swap" rel="stylesheet" />
@@ -11,67 +11,119 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div id="loading" class="screen">
-    <div class="loader"></div>
-    <p>On prépare l'île aux bonbons...</p>
+  <div id="loading" class="overlay visible">
+    <div class="spinner"></div>
+    <p>Préparation de la nuit sucrée…</p>
   </div>
 
-  <div id="error-screen" class="screen" style="display:none;">
+  <div id="error" class="overlay" style="display:none;">
     <h2>🛠️ Oups</h2>
-    <p id="error-text">Un problème est survenu.</p>
+    <p id="error-text">Erreur</p>
   </div>
 
   <canvas id="game-canvas"></canvas>
 
-  <div id="ui">
-    <header class="hud glass">
-      <div class="brand">
-        <span class="logo">🍭</span>
-        <div>
-          <h1>Île aux Bonbons</h1>
-          <p>Course des Gourmands</p>
-        </div>
+  <!-- HUD de jeu -->
+  <div id="hud" class="ui-layer">
+    <div class="hud-top glass">
+      <div class="hud-stat">
+        <span>Distance</span>
+        <strong id="hud-distance">0 m</strong>
       </div>
-      <div class="turn">
-        <span>Tour de</span>
-        <strong id="active-player">Gélatti Rose</strong>
+      <div class="hud-stat big">
+        <span>Score</span>
+        <strong id="hud-score">0</strong>
       </div>
-    </header>
+      <div class="hud-stat">
+        <span>Sucres</span>
+        <strong id="hud-candies">0</strong>
+      </div>
+    </div>
 
-    <aside class="scores glass" id="scores"></aside>
+    <div class="hud-right">
+      <div class="hud-bar glass" id="sugar-rush-bar" title="Sugar Rush">
+        <div class="fill" id="sugar-fill"></div>
+        <span>🌟 Sugar Rush</span>
+      </div>
+    </div>
 
-    <footer class="action glass" id="controls">
-      <button id="play-btn" class="play">
-        🎲 Lancer le dé
-      </button>
-      <div class="die-result" id="die-result">—</div>
-      <p id="instruction">Lance le dé pour avancer ton bonbon !</p>
-    </footer>
+    <div class="hud-bottom glass" id="powerups"></div>
   </div>
 
-  <div id="start" class="screen visible">
-    <div class="card glass">
-      <div class="hero">🍬🍭🧁🍩</div>
-      <h1>Île aux Bonbons</h1>
-      <h2>Course des Gourmands</h2>
-      <ul class="rule-list">
-        <li>🎲 Lance le dé pour avancer ton bonbon sur le parcours.</li>
-        <li>🍬 Plus tu manges de friandises, plus tu gagnes de points.</li>
-        <li>🍫 Attention au chocolat amer : recule et perds des points !</li>
-        <li>🌈 L'arc-en-ciel te téléporte plus loin.</li>
-        <li>🏁 Le premier sur la case finale gagne un gros bonus. Puise les points, et deviens le roi gourmand !</li>
-      </ul>
-      <button id="start-btn" class="play large">Jouer maintenant 🎉</button>
+  <!-- Menu principal -->
+  <div id="menu" class="overlay visible">
+    <div class="modal glass">
+      <div class="title">🍭 Candy Rush Night</div>
+      <div class="subtitle">Survive la nuit, collectionne tout, améliore ton bonbon.</div>
+      <div class="stats-row">
+        <div class="mini-card"><span>🍬</span><strong id="menu-sugar">0</strong><small>sucres</small></div>
+        <div class="mini-card"><span>🏆</span><strong id="menu-best">0</strong><small>record</small></div>
+        <div class="mini-card"><span>🌙</span><strong id="menu-runs">0</strong><small>runs</small></div>
+      </div>
+      <button class="btn-main" id="btn-play">▶ Lancer une run</button>
+      <div class="menu-actions">
+        <button class="btn-secondary" id="btn-shop">🛒 Boutique</button>
+        <button class="btn-secondary" id="btn-help">❓ Aide</button>
+      </div>
     </div>
   </div>
 
-  <div id="end" class="screen">
-    <div class="card glass">
-      <div class="hero trophy">🏆</div>
-      <h1 id="winner-title">Victoire !</h1>
-      <p id="winner-text">Bravo !</p>
-      <div id="final-scores"></div>
-      <button id="restart-btn" class="play large">Rejouer 🔄</button>
+  <!-- Boutique -->
+  <div id="shop" class="overlay">
+    <div class="modal glass scrollable">
+      <div class="title">🛒 Boutique</div>
+      <div class="subtitle">Dépense tes sucres pour devenir unstoppable.</div>
+      <div id="shop-items"></div>
+      <button class="btn-back" id="btn-close-shop">↩ Retour</button>
+    </div>
+  </div>
+
+  <!-- Aide -->
+  <div id="help" class="overlay">
+    <div class="modal glass scrollable">
+      <div class="title">❓ Comment jouer</div>
+      <ul class="help-list">
+        <li>🖱️ <b>Déplace</b> ton bonbon avec la souris ou le doigt.</li>
+        <li>🍬 <b>Ramasse</b> les bonbons pour gagner des sucres et du score.</li>
+        <li>🍫 <b>Évite</b> le chocolat amer et les bombes.</li>
+        <li>⭐ Remplis la jauge <b>Sugar Rush</b> en enchaînant les collections.</li>
+        <li>🛍️ Achète des améliorations avec tes sucres entre les runs.</li>
+      </ul>
+      <div class="legend">
+        <div><span class="dot candy"></span> Bonbon (+1 sucre)</div>
+        <div><span class="dot bigcandy"></span> Gros bonbon (+5 sucres)</div>
+        <div><span class="dot heart"></span> Cupcake (+1 vie)</div>
+        <div><span class="dot magnet"></span> Aimant automatique</div>
+        <div><span class="dot shield"></span> Bouclier (1 coup)</div>
+        <div><span class="dot x2"></span> Double score</div>
+        <div><span class="dot bad"></span> Chocolat amer (-1 vie)</div>
+        <div><span class="dot bomb"></span> Bombe (-2 vies)</div>
+      </div>
+      <button class="btn-back" id="btn-close-help">↩ Retour</button>
+    </div>
+  </div>
+
+  <!-- Game Over -->
+  <div id="gameover" class="overlay">
+    <div class="modal glass">
+      <div class="title" id="go-title">💥 Run terminée</div>
+      <div class="subtitle" id="go-subtitle">Tu as tenu X mètres.</div>
+      <div class="stats-row big">
+        <div class="mini-card"><span>🏆</span><strong id="go-score">0</strong><small>score</small></div>
+        <div class="mini-card"><span>🍬</span><strong id="go-sugar">0</strong><small>sucres ramassés</small></div>
+        <div class="mini-card"><span>📏</span><strong id="go-dist">0m</strong><small>distance</small></div>
+      </div>
+      <button class="btn-main" id="btn-retry">↻ Rejouer</button>
+      <button class="btn-back" id="btn-back-menu">⌂ Menu</button>
+    </div>
+  </div>
+
+  <!-- Pause -->
+  <div id="pause" class="overlay">
+    <div class="modal glass">
+      <div class="title">⏸️ Pause</div>
+      <button class="btn-main" id="btn-resume">▶ Reprendre</button>
+      <button class="btn-back" id="btn-quit">⌂ Menu</button>
     </div>
   </div>
 

@@ -1,20 +1,21 @@
-# 🍭 Île aux Bonbons — Course des Gourmands
+# 🍭 Candy Rush Night — Runner solo 3D
 
-Un jeu de plateau 3D familial, coloré et simple, propulsé par Three.js.
+Un runner/coloré et addictif dans une nuit sucrée. Guide ton bonbon, collectionne les friandises, évite les pièges, active la Sugar Rush, et améliore ton personnage entre chaque run pour aller toujours plus loin.
 
-## Concept
-Quatre bonbons mignons font la course sur une île aux friandises. Lance le dé, avance sur le parcours, collecte des sucres, évite le chocolat amer, et sois le premier à atteindre le trésor final.
+## Contrôles
+- 🖱️ **Souris** : déplace-toi de gauche à droite.
+- 👆 **Doigt** : pareil sur mobile.
+- ⏸️ **Échap** : pause.
 
-## Règles
-- 🎲 **Lance le dé** pour avancer ton personnage.
-- 🍬 **Bonbon** : +10 sucres.
-- 🍭 **Sucette Boost** : +5 sucres, avance de 2 cases.
-- 🍫 **Chocolat Amer** : -5 sucres, recule de 2 cases.
-- 🎁 **Cadeau Gourmand** : +20 à +50 sucres surprise.
-- 🌈 **Arc-en-ciel** : téléporte de 4 cases en avant.
-- 🏁 **Trésor Final** : +100 sucres. Fin du jeu.
+## Mécaniques
+- 🍬 Bonbons : +1 sucre, +score.
+- 🌟 **Sugar Rush** : ramasse en continu pour remplir la jauge et devenir ultra-rapide avec un multiplicateur de score.
+- 🛡️ **Bouclier**, 🧲 **Aimant**, ✖️2 **Double score** et ❤️ **Vie** en bonus.
+- 🍫 **Chocolat amer** et 💣 **Bombe** à éviter.
+- 🛒 Boutique d'améliorations permanentes avec les sucres accumulés.
 
-Le joueur avec le plus de sucres à la fin remporte la partie.
+## Sauvegarde
+Progression sauvegardée dans le `localStorage` du navigateur.
 
 ## Jouer
-Ouvre `index.html` dans un navigateur récent, ou déploie ce dossier sur Netlify / GitHub Pages.
+Ouvre `index.html` ou déploie sur Netlify / GitHub Pages.
