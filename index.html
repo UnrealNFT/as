@@ -3,88 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="referrer" content="no-referrer-when-downgrade" />
-  <title>Miam'Monde 🌍 — Jeu de plateau familial</title>
+  <title>Île aux Bonbons 🍭 — Course des Gourmands</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet" />
-  <!-- Three.js via jsdelivr (plus fiable sur Netlify) -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div id="loading">
+  <div id="loading" class="screen">
     <div class="loader"></div>
-    <p id="loading-text">Préparation du festival gastronomique...</p>
+    <p>On prépare l'île aux bonbons...</p>
   </div>
 
-  <div id="error-banner" class="error-banner" style="display:none;">
-    <strong>🛠️ Oups !</strong>
-    <p id="error-message">Un problème est survenu.</p>
-    <p>Ouvre la console (F12 → Console) si tu veux plus de détails.</p>
+  <div id="error-screen" class="screen" style="display:none;">
+    <h2>🛠️ Oups</h2>
+    <p id="error-text">Un problème est survenu.</p>
   </div>
 
   <canvas id="game-canvas"></canvas>
 
-  <div id="ui-layer">
-    <header class="top-bar glass">
-      <div class="logo">
-        <span class="emoji">🌍</span>
-        <h1>Miam'Monde</h1>
+  <div id="ui">
+    <header class="hud glass">
+      <div class="brand">
+        <span class="logo">🍭</span>
+        <div>
+          <h1>Île aux Bonbons</h1>
+          <p>Course des Gourmands</p>
+        </div>
       </div>
-      <div id="turn-info">Tour de : <span id="current-player">Joueur 1</span></div>
+      <div class="turn">
+        <span>Tour de</span>
+        <strong id="active-player">Gélatti Rose</strong>
+      </div>
     </header>
 
-    <aside class="left-panel glass" id="players-panel"></aside>
+    <aside class="scores glass" id="scores"></aside>
 
-    <div class="bottom-controls glass" id="controls">
-      <button id="roll-btn" class="btn-primary">
-        <span>🎲</span> Lancer les dés
+    <footer class="action glass" id="controls">
+      <button id="play-btn" class="play">
+        🎲 Lancer le dé
       </button>
-      <button id="buy-btn" class="btn-secondary" disabled>
-        <span>🍽️</span> Acheter le stand
-      </button>
-      <button id="end-btn" class="btn-tertiary" disabled>
-        <span>✅</span> Terminer le tour
-      </button>
-    </div>
+      <div class="die-result" id="die-result">—</div>
+      <p id="instruction">Lance le dé pour avancer ton bonbon !</p>
+    </footer>
+  </div>
 
-    <div class="dice-display glass" id="dice-display">
-      <div class="die" id="die-1">?</div>
-      <div class="die" id="die-2">?</div>
+  <div id="start" class="screen visible">
+    <div class="card glass">
+      <div class="hero">🍬🍭🧁🍩</div>
+      <h1>Île aux Bonbons</h1>
+      <h2>Course des Gourmands</h2>
+      <ul class="rule-list">
+        <li>🎲 Lance le dé pour avancer ton bonbon sur le parcours.</li>
+        <li>🍬 Plus tu manges de friandises, plus tu gagnes de points.</li>
+        <li>🍫 Attention au chocolat amer : recule et perds des points !</li>
+        <li>🌈 L'arc-en-ciel te téléporte plus loin.</li>
+        <li>🏁 Le premier sur la case finale gagne un gros bonus. Puise les points, et deviens le roi gourmand !</li>
+      </ul>
+      <button id="start-btn" class="play large">Jouer maintenant 🎉</button>
     </div>
+  </div>
 
-    <div class="event-overlay" id="event-overlay">
-      <div class="event-card glass" id="event-card">
-        <div class="event-icon">🎁</div>
-        <h2 id="event-title">Pause gourmande</h2>
-        <p id="event-text">Tu gagnes 100 crédits !</p>
-        <button id="event-ok" class="btn-primary">Miam !</button>
-      </div>
-    </div>
-
-    <div class="win-overlay" id="win-overlay">
-      <div class="win-card glass">
-        <div class="trophy">🏆</div>
-        <h2 id="winner-name">Joueur 1</h2>
-        <p>remporte le festival gastronomique !</p>
-        <button id="restart-btn" class="btn-primary">Nouvelle partie</button>
-      </div>
-    </div>
-
-    <div class="start-screen" id="start-screen">
-      <div class="start-card glass">
-        <div class="emoji-big">🍕🌮🍜🍦</div>
-        <h1>Miam'Monde</h1>
-        <p class="tagline">Le festival gastronomique familial en 3D !</p>
-        <ul class="rules">
-          <li>🎲 Avance en lançant 2 dés</li>
-          <li>🍽️ Achète des stands du monde entier</li>
-          <li>🎁 Pioche des cartes surprises</li>
-          <li>🏆 Gagne le tournoi Culinaire !</li>
-        </ul>
-        <button id="start-btn" class="btn-primary large">Commencer la partie</button>
-      </div>
+  <div id="end" class="screen">
+    <div class="card glass">
+      <div class="hero trophy">🏆</div>
+      <h1 id="winner-title">Victoire !</h1>
+      <p id="winner-text">Bravo !</p>
+      <div id="final-scores"></div>
+      <button id="restart-btn" class="play large">Rejouer 🔄</button>
     </div>
   </div>
 
