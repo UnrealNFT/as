@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Miam'Monde 🌍 — Jeu de plateau familial</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+  <div id="loading">
+    <div class="loader"></div>
+    <p>Préparation du festival gastronomique...</p>
+  </div>
+
+  <canvas id="game-canvas"></canvas>
+
+  <div id="ui-layer">
+    <header class="top-bar glass">
+      <div class="logo">
+        <span class="emoji">🌍</span>
+        <h1>Miam'Monde</h1>
+      </div>
+      <div id="turn-info">Tour de : <span id="current-player">Joueur 1</span></div>
+    </header>
+
+    <aside class="left-panel glass" id="players-panel"></aside>
+
+    <div class="bottom-controls glass" id="controls">
+      <button id="roll-btn" class="btn-primary">
+        <span>🎲</span> Lancer les dés
+      </button>
+      <button id="buy-btn" class="btn-secondary" disabled>
+        <span>🍽️</span> Acheter le stand
+      </button>
+      <button id="end-btn" class="btn-tertiary" disabled>
+        <span>✅</span> Terminer le tour
+      </button>
+    </div>
+
+    <div class="dice-display glass" id="dice-display">
+      <div class="die" id="die-1">?</div>
+      <div class="die" id="die-2">?</div>
+    </div>
+
+    <div class="event-overlay" id="event-overlay">
+      <div class="event-card glass" id="event-card">
+        <div class="event-icon">🎁</div>
+        <h2 id="event-title">Pause gourmande</h2>
+        <p id="event-text">Tu gagnes 100 crédits !</p>
+        <button id="event-ok" class="btn-primary">Miam !</button>
+      </div>
+    </div>
+
+    <div class="win-overlay" id="win-overlay">
+      <div class="win-card glass">
+        <div class="trophy">🏆</div>
+        <h2 id="winner-name">Joueur 1</h2>
+        <p>remporte le festival gastronomique !</p>
+        <button id="restart-btn" class="btn-primary">Nouvelle partie</button>
+      </div>
+    </div>
+
+    <div class="start-screen" id="start-screen">
+      <div class="start-card glass">
+        <div class="emoji-big">🍕🌮🍜🍦</div>
+        <h1>Miam'Monde</h1>
+        <p class="tagline">Le festival gastronomique familial en 3D !</p>
+        <ul class="rules">
+          <li>🎲 Avance en lançant 2 dés</li>
+          <li>🍽️ Achète des stands du monde entier</li>
+          <li>🎁 Pioche des cartes surprises</li>
+          <li>🏆 Gagne le tournoi Culinaire !</li>
+        </ul>
+        <button id="start-btn" class="btn-primary large">Commencer la partie</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/game.js"></script>
+</body>
+</html>
