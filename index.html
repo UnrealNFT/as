@@ -3,15 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="no-referrer-when-downgrade" />
   <title>Miam'Monde 🌍 — Jeu de plateau familial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Three.js via jsdelivr (plus fiable sur Netlify) -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <div id="loading">
     <div class="loader"></div>
-    <p>Préparation du festival gastronomique...</p>
+    <p id="loading-text">Préparation du festival gastronomique...</p>
+  </div>
+
+  <div id="error-banner" class="error-banner" style="display:none;">
+    <strong>🛠️ Oups !</strong>
+    <p id="error-message">Un problème est survenu.</p>
+    <p>Ouvre la console (F12 → Console) si tu veux plus de détails.</p>
   </div>
 
   <canvas id="game-canvas"></canvas>
